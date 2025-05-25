@@ -40,7 +40,7 @@ To run these scripts, you'll need the following installed on your system:
 
 1.  **Clone the repository (if you haven't already):**
     ```bash
-    git clone https://github.com/BillyBoukobza/Stock-Scrapping-for-Quantitative-Analysis
+    git clone --branch feat/consolidated-scripts --single-branch https://github.com/BillyBoukobza/Stock-Scrapping-for-Quantitative-Analysis
     cd Stock-Scrapping-for-Quantitative-Analysis
     ```
 
