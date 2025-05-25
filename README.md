@@ -1,98 +1,54 @@
-# Stock-Scrapping-for-Quantitative-Analysis
+# Stock Scraping for Quantitative Analysis (Yahoo Finance Scraper)
 
-## Overview
-
-This project contains scripts designed to fetch various types of stock data from online sources (primarily Yahoo Finance) for quantitative analysis. It includes a consolidated JavaScript application for fetching analyst data and key statistics, and a Python script for retrieving detailed financial statements.
-
-## Structure
-
-The main scripts for use are:
-
-*   `combined_stock_scripts.js`: A Node.js script that consolidates the functionality of three original scripts. It fetches:
-    *   Analyst price targets.
-    *   Analyst recommendations.
-    *   Key statistics (e.g., valuation measures).
-    It saves this data into `.xlsx` files in a structured output folder, typically creating or updating files like `{ticker}_valuation_measures.xlsx` and `recommendation_trend_{ticker}.xlsx`.
-
-*   `Financials_for_multiple_stocks.py`: A Python script that fetches detailed financial statements (Income Statement, Balance Sheet, Cash Flow) for a list of stock tickers. It saves each statement into a separate sheet within an Excel file named `{ticker}_financial_statements.xlsx`.
-
-The original individual JavaScript files are also still available in the repository:
-*   `Analyst Price Targets generalized to all stocks.js`
-*   `Analyst Reccomendation_looping on multiple Stock to create new Excel Sheets.js`
-*   `Statistics to XLS.js`
-
-Configuration files:
-*   `package.json`: Defines the Node.js project, dependencies, and scripts for the JavaScript part.
-*   `requirements.txt`: Lists the Python dependencies.
-*   `.gitignore`: Specifies intentionally untracked files that Git should ignore (e.g., `node_modules`).
+This project contains a Node.js script (`yahoo_finance_scraper.js`) designed to fetch various financial data points for a list of stock tickers. It retrieves information such as analyst price targets, recommendations, and key statistics, primarily using the `yahoo-finance2` library and `puppeteer` for web scraping.
 
 ## Prerequisites
 
-To run these scripts, you'll need the following installed on your system:
-
-*   **For `combined_stock_scripts.js`:**
-    *   [Node.js](https://nodejs.org/) (which includes npm, the Node.js package manager).
-*   **For `Financials_for_multiple_stocks.py`:**
-    *   [Python](https://www.python.org/) (version 3.x recommended).
-    *   pip (Python package installer, usually comes with Python).
+- Node.js (which includes npm)
 
 ## Setup
 
 1.  **Clone the repository (if you haven't already):**
     ```bash
-    git clone --branch feat/consolidate-scripts --single-branch git@github.com:BillyBoukobza/Stock-Scrapping-for-Quantitative-Analysis.git
+    git clone https://github.com/BillyBoukobza/Stock-Scrapping-for-Quantitative-Analysis.git
     cd Stock-Scrapping-for-Quantitative-Analysis
     ```
-
-2.  **JavaScript Dependencies:**
-    Navigate to the project's root directory in your terminal and run:
+2.  **Install dependencies:**
+    Open your terminal in the project root directory and run:
     ```bash
     npm install
     ```
-    This command will download and install the necessary Node.js packages defined in `package.json` (yahoo-finance2, xlsx, puppeteer).
+    This will install all necessary packages defined in `package.json` (including `yahoo-finance2`, `xlsx`, `puppeteer`, `p-limit`, and `delay`).
 
-3.  **Python Dependencies:**
-    In the project's root directory, run:
-    ```bash
-    pip install -r requirements.txt
-    ```
-    This command will install the required Python libraries defined in `requirements.txt` (pandas, yfinance, openpyxl).
+## Running the Script
 
-## Running the Scripts
-
-### JavaScript (`combined_stock_scripts.js`)
-
-To run the consolidated JavaScript script, navigate to the project's root directory in your terminal and use:
+To execute the scraper, run the following command in your terminal from the project root:
 ```bash
 npm start
 ```
-Alternatively, you can directly execute the file with Node.js:
+Alternatively, you can run it directly with node:
 ```bash
-node combined_stock_scripts.js
+node yahoo_finance_scraper.js
 ```
-This script will process the tickers found in the input Excel file (see Important Notes below) and generate/update Excel files in the specified output directory.
 
-### Python (`Financials_for_multiple_stocks.py`)
+## Configuration: IMPORTANT!
 
-To run the Python script, ensure you are in the project's root directory and execute:
-```bash
-python Financials_for_multiple_stocks.py
+The script currently uses **hardcoded paths** to locate the input Excel file (containing stock tickers) and to determine where the output Excel files will be saved.
+
+You **MUST** modify these paths within the `yahoo_finance_scraper.js` file to match your local environment before running the script.
+
+Look for these lines near the top of `yahoo_finance_scraper.js` and update them:
+
+```javascript
+// Path to the Excel file containing tickers
+const excelPath = path.join('C:', 'Users', 'billy', 'OneDrive', 'Bureau', 'Finanaces', 'Investissements', 'Stocks', 'Long', 'IBKR API Python - Stock Info - v2.xlsx');
+
+// Output folder for the generated Excel files
+const outputFolder = path.join('C:', 'Users', 'billy', 'OneDrive', 'Bureau', 'Finances', 'Investissements', 'Stocks', 'Long', 'XLSX');
 ```
-This script will also use the tickers from the input Excel file and save financial statements into new Excel files in the output directory.
 
-## Important Notes: Hardcoded Paths
+Failure to update these paths will likely result in the script not finding your input file or saving output to an unintended location.
 
-**Crucial:** Both the JavaScript (`combined_stock_scripts.js`) and Python (`Financials_for_multiple_stocks.py`) scripts currently use **hardcoded file paths** for:
+## Original Scripts
 
-1.  **Input Ticker File:** The Excel file from which stock tickers are read.
-    *   Example path in scripts: `C:\Users\billy\OneDrive\Bureau\Finances\Investissements\Stocks\Long\IBKR API Python - Stock Info - v2.xlsx`
-
-2.  **Output Directory:** The folder where the generated Excel files are saved.
-    *   Example path in scripts: `C:\Users\billy\OneDrive\Bureau\Finances\Investissements\Stocks\Long\XLSX`
-
-**You MUST modify these paths directly within the scripts if your file locations or desired output directories are different.**
-
-*   In `combined_stock_scripts.js`: Look for `excelPath` and `outputFolder` constants near the top of the file.
-*   In `Financials_for_multiple_stocks.py`: Look for `excel_file_path` and `output_folder` variables near the top of the script.
-
-Failure to update these paths to match your environment will result in the scripts not finding the input file or saving data to unintended locations.
+The repository may also contain older scripts (like `combined_stock_scripts.js` or individual Python scripts) from previous iterations. This README focuses on the `yahoo_finance_scraper.js` script. Refer to previous commits or branches if you need information on those.

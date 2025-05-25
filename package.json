@@ -1,10 +1,10 @@
 {
-  "name": "stock-analysis-scripts",
+  "name": "yahoo-finance-scraper",
   "version": "1.0.0",
-  "description": "Scripts for stock analysis and data collection.",
-  "main": "combined_stock_scripts.js",
+  "description": "A script to scrape financial data from Yahoo Finance and other sources.",
+  "main": "yahoo_finance_scraper.js",
   "scripts": {
-    "start": "node combined_stock_scripts.js",
+    "start": "node yahoo_finance_scraper.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/BillyBoukobza/Stock-Scrapping-for-Quantitative-Analysis#readme",
   "dependencies": {
+    "delay": "^6.0.0",
+    "p-limit": "^6.2.0",
     "puppeteer": "^24.9.0",
     "xlsx": "^0.18.5",
     "yahoo-finance2": "^2.13.3"
