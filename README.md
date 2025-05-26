@@ -1,98 +1,44 @@
-# Stock-Scrapping-for-Quantitative-Analysis
+# Yahoo Finance Earnings Calendar Scraper
 
-## Overview
-
-This project contains scripts designed to fetch various types of stock data from online sources (primarily Yahoo Finance) for quantitative analysis. It includes a consolidated JavaScript application for fetching analyst data and key statistics, and a Python script for retrieving detailed financial statements.
-
-## Structure
-
-The main scripts for use are:
-
-*   `combined_stock_scripts.js`: A Node.js script that consolidates the functionality of three original scripts. It fetches:
-    *   Analyst price targets.
-    *   Analyst recommendations.
-    *   Key statistics (e.g., valuation measures).
-    It saves this data into `.xlsx` files in a structured output folder, typically creating or updating files like `{ticker}_valuation_measures.xlsx` and `recommendation_trend_{ticker}.xlsx`.
-
-*   `Financials_for_multiple_stocks.py`: A Python script that fetches detailed financial statements (Income Statement, Balance Sheet, Cash Flow) for a list of stock tickers. It saves each statement into a separate sheet within an Excel file named `{ticker}_financial_statements.xlsx`.
-
-The original individual JavaScript files are also still available in the repository:
-*   `Analyst Price Targets generalized to all stocks.js`
-*   `Analyst Reccomendation_looping on multiple Stock to create new Excel Sheets.js`
-*   `Statistics to XLS.js`
-
-Configuration files:
-*   `package.json`: Defines the Node.js project, dependencies, and scripts for the JavaScript part.
-*   `requirements.txt`: Lists the Python dependencies.
-*   `.gitignore`: Specifies intentionally untracked files that Git should ignore (e.g., `node_modules`).
+This Python script fetches and extracts the earnings calendar data for a given stock ticker from Yahoo Finance. It uses Selenium to control a web browser, allowing it to access dynamically loaded content.
 
 ## Prerequisites
 
-To run these scripts, you'll need the following installed on your system:
-
-*   **For `combined_stock_scripts.js`:**
-    *   [Node.js](https://nodejs.org/) (which includes npm, the Node.js package manager).
-*   **For `Financials_for_multiple_stocks.py`:**
-    *   [Python](https://www.python.org/) (version 3.x recommended).
-    *   pip (Python package installer, usually comes with Python).
+*   Python 3.6 or higher.
+*   Google Chrome web browser installed.
+*   ChromeDriver installed:
+    *   Download the ChromeDriver version that matches your Google Chrome browser version from [https://chromedriver.chromium.org/downloads](https://chromedriver.chromium.org/downloads).
+    *   The ChromeDriver executable must be in your system's PATH. Alternatively, you would need to specify the path to the executable directly in the script (this script currently assumes it's in PATH).
 
 ## Setup
 
-1.  **Clone the repository (if you haven't already):**
+1.  **Install Python dependencies:**
+    Open your terminal or command prompt and run:
     ```bash
-    git clone --branch feat/consolidated-scripts --single-branch https://github.com/BillyBoukobza/Stock-Scrapping-for-Quantitative-Analysis
-    cd Stock-Scrapping-for-Quantitative-Analysis
+    pip install selenium
     ```
 
-2.  **JavaScript Dependencies:**
-    Navigate to the project's root directory in your terminal and run:
-    ```bash
-    npm install
-    ```
-    This command will download and install the necessary Node.js packages defined in `package.json` (yahoo-finance2, xlsx, puppeteer).
+## Running the Script
 
-3.  **Python Dependencies:**
-    In the project's root directory, run:
-    ```bash
-    pip install -r requirements.txt
-    ```
-    This command will install the required Python libraries defined in `requirements.txt` (pandas, yfinance, openpyxl).
+Execute the script from your terminal:
 
-## Running the Scripts
-
-### JavaScript (`combined_stock_scripts.js`)
-
-To run the consolidated JavaScript script, navigate to the project's root directory in your terminal and use:
 ```bash
-npm start
+python yahoo_earnings_calendar.py <TICKER_SYMBOL>
 ```
-Alternatively, you can directly execute the file with Node.js:
+
+Replace `<TICKER_SYMBOL>` with the stock ticker you are interested in.
+
+**Example:**
+
 ```bash
-node combined_stock_scripts.js
+python yahoo_earnings_calendar.py AAPL
 ```
-This script will process the tickers found in the input Excel file (see Important Notes below) and generate/update Excel files in the specified output directory.
 
-### Python (`Financials_for_multiple_stocks.py`)
+## Output
 
-To run the Python script, ensure you are in the project's root directory and execute:
-```bash
-python Financials_for_multiple_stocks.py
-```
-This script will also use the tickers from the input Excel file and save financial statements into new Excel files in the output directory.
+The script will attempt to locate and print the JSON object containing the earnings calendar dates and related information for the specified ticker. If the specific earnings data path within the larger page data isn't found directly, it will print a larger portion of the available JSON data for inspection.
 
-## Important Notes: Hardcoded Paths
+## Troubleshooting
 
-**Crucial:** Both the JavaScript (`combined_stock_scripts.js`) and Python (`Financials_for_multiple_stocks.py`) scripts currently use **hardcoded file paths** for:
-
-1.  **Input Ticker File:** The Excel file from which stock tickers are read.
-    *   Example path in scripts: `C:\Users\billy\OneDrive\Bureau\Finances\Investissements\Stocks\Long\IBKR API Python - Stock Info - v2.xlsx`
-
-2.  **Output Directory:** The folder where the generated Excel files are saved.
-    *   Example path in scripts: `C:\Users\billy\OneDrive\Bureau\Finances\Investissements\Stocks\Long\XLSX`
-
-**You MUST modify these paths directly within the scripts if your file locations or desired output directories are different.**
-
-*   In `combined_stock_scripts.js`: Look for `excelPath` and `outputFolder` constants near the top of the file.
-*   In `Financials_for_multiple_stocks.py`: Look for `excel_file_path` and `output_folder` variables near the top of the script.
-
-Failure to update these paths to match your environment will result in the scripts not finding the input file or saving data to unintended locations.
+*   **`selenium.common.exceptions.WebDriverException: Message: 'chromedriver' executable needs to be in PATH.`**
+    This means the ChromeDriver executable was not found. Ensure you have downloaded ChromeDriver, and the directory containing `chromedriver.exe` (Windows) or `chromedriver` (macOS/Linux) is added to your system's PATH environment variable. You might need to restart your terminal or system for PATH changes to take effect.
